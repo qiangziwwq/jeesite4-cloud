@@ -1,18 +1,22 @@
 ## 引言
 
-JeeSite Spring Cloud 是基于 Spring Cloud Finchley 的一个分布式系统套件的整合。
+[JeeSite Spring Cloud](https://gitee.com/thinkgem/jeesite4-cloud) 具备 [JeeSite 4.x](https://gitee.com/thinkgem/jeesite4) 的所有功能，是在 JeeSite 4.x 基础之上，完成的 [Spring Cloud](https://spring.io/projects/spring-cloud) 分布式系统套件的整合。它利用 JeeSite 4.x 的开发便利性巧妙地简化了分布式系统开发。
+
+JeeSite Spring Cloud 并没有重复制造轮子，它只是将目前比较成熟的、经得起实际考验的服务框架组合起来，通过 Spring Boot 风格进行再封装屏蔽掉了复杂的配置和实现原理，最终给开发者留出了一套简单易懂、易部署和易维护的分布式系统开发工具包。
 
 **特点：用经典开发模式，开发分布式应用，两个字【简单】，一个字【快】。**
 
 ## 技术选型
 
 * 分布式系统套件版本：Spring Cloud Finchley
-* 服务治理注册与发现：Spring Cloud Netflix Eureka
-* 服务容错保护限流降级：Spring Cloud Netflix Hystrix
+* 服务治理注册与发现：Spring Cloud Eureka / Consul
+* 服务容错保护限流降级：Spring Cloud Hystrix
 * 分布式统一配置中心：Spring Cloud Config
 * 网关路由代理调用：Spring Cloud Gateway
 * 声明式服务调用：Spring Cloud OpenFeign
-* 分布式链路追踪：Spring Cloud Zipkin
+* 分布式链路追踪：Spring Cloud Zipkin (可选组件)
+* 分布式事务框架：Codingapi TX-LCN (可选组件)
+* 工作流引擎框架：Flowable (可选组件)
 
 ## 子项目介绍
 
@@ -26,14 +30,14 @@ JeeSite Spring Cloud 是基于 Spring Cloud Finchley 的一个分布式系统套
 * 测试模块2（树表增删改查示例）：
     - 模块2主项目：jeesite-cloud-module-test2 ： <http://127.0.0.1:8983/js>
     - 模块2客户端项目（提供其它模块调用）：jeesite-cloud-module-test2-client
+* 链路追踪：jeesite-cloud-zipkin ： <http://127.0.0.1:9411>
 
 ## 快速运行
 
-* 初始化数据库（下载最新的mysql脚本）：
-     https://gitee.com/thinkgem/jeesite4/attach_files
-* 配置 `/jeesite-cloud-config/../cloud-config/application.yml`
-     分布式统一配置文件 JDBC 和 Redis 等信息。
-* 按顺序运行以下启动类的main方法（**启动完成一个再启下一个**）：
+* 初始化数据库：[下载最新的mysql脚本](https://gitee.com/thinkgem/jeesite4/attach_files)
+     或者使用 [init-db.bat](https://jeesite.gitee.io/docs/install-deploy/#初始化数据库) 命令
+* 修改分布式统一配置文件 `/jeesite-cloud-config/../cloud-config/application.yml` 的 JDBC 和 Redis 信息
+* 按顺序运行以下启动类的main方法：（因为服务直接有依赖，请启动完成一个再启下一个）
     - /jeesite-cloud-eureka/../EurekaApplication.java
     - /jeesite-cloud-config/../ConfigApplication.java
     - /jeesite-cloud-gateway/../GatewayApplication.java
@@ -43,6 +47,8 @@ JeeSite Spring Cloud 是基于 Spring Cloud Finchley 的一个分布式系统套
 * 以上都启动成功后，浏览器访问网关项目地址即可：
     - 访问地址：<http://127.0.0.1:8980/js>   system   admin
     - 若访问报错，请再等待一会，可能服务未完全启动完成
+
+![](https://images.gitee.com/uploads/images/2020/0120/235836_b3da5155_6732.png)
 
 ## 调用实例演示
 
@@ -86,7 +92,7 @@ JeeSite Spring Cloud 是基于 Spring Cloud Finchley 的一个分布式系统套
 * 官方论坛：<http://jeesite.net>
 * 微信公众号：
 
-![JeeSite4微信公众号](https://static.oschina.net/uploads/space/2018/0302/145133_OGZf_941661.jpg "JeeSite4微信公众号")
+![JeeSite4微信公众号](https://images.gitee.com/uploads/images/2020/0120/235836_3018847b_6732.jpeg "JeeSite4微信公众号")
 
 # Git 全局设置技巧
 

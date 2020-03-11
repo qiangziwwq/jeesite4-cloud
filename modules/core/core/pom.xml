@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.jeesite</groupId>
 		<artifactId>jeesite-cloud-parent</artifactId>
-		<version>4.1.6-SNAPSHOT</version>
+		<version>4.1.8-SNAPSHOT</version>
 		<relativePath>../../../parent/pom.xml</relativePath>
 	</parent>
 	
@@ -58,12 +58,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
 		</dependency>-->
-		
-		<!-- 核心模块 -->
+
+		<!-- 链路追踪服务 -->
 		<dependency>
-			<groupId>com.jeesite</groupId>
-			<artifactId>jeesite-cloud-module-core-rest</artifactId>
-			<version>${project.parent.version}</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
 		</dependency>
 		
 		<!-- 在线文档 -->
@@ -73,9 +72,36 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 		
+		<!-- 分布式事务
+		<dependency>
+			<groupId>com.jeesite</groupId>
+			<artifactId>jeesite-cloud-module-txlcn-client</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency> -->
+		
+		<!-- 核心模块 -->
+		<dependency>
+			<groupId>com.jeesite</groupId>
+			<artifactId>jeesite-cloud-module-core-rest</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<!-- 业务流程
+		<dependency>
+			<groupId>com.jeesite</groupId>
+			<artifactId>jeesite-cloud-module-bpm-rest</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency> -->
+		
 		<dependency>
 			<groupId>com.jeesite</groupId>
 			<artifactId>jeesite-cloud-module-test1-client</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesite</groupId>
+			<artifactId>jeesite-cloud-module-test2-client</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		

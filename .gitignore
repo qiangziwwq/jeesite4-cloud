@@ -2,11 +2,20 @@
 **/target
 **/webapp/userfiles
 **/WEB-INF/classes
+**/transaction-logs
 **/logs/*.log*
 *.epoch
+*.mv.db
+*.lic
 
+**/.settings/**/*
+!**/.settings/org.eclipse.core.resources.prefs
+!**/.settings/org.eclipse.wst.common.project.facet.core.xml
+.apt_generated
+.factorypath
 .classpath
 .project
+.vscode
 
 .idea
 *.ipr
@@ -15,3 +24,4 @@
 
 .DS_Store
 Thumbs.db
+rebel.xml

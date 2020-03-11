@@ -5,7 +5,7 @@
 	
 	<groupId>com.jeesite</groupId>
 	<artifactId>jeesite-cloud-root</artifactId>
-	<version>4.1.6-SNAPSHOT</version>
+	<version>4.1.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>JeeSite Cloud</name>
@@ -23,6 +23,8 @@
         <module>../modules/test1/test1</module>
         <module>../modules/test2/test2-client</module>
         <module>../modules/test2/test2</module>
+		<module>../zipkin</module>
+	    <module>../admin</module>
     </modules>
 	
 	<developers>  

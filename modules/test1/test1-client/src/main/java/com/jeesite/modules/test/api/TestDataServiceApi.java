@@ -1,21 +1,20 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.api;
 
-import java.util.List;
-
+import com.jeesite.common.entity.Page;
+import com.jeesite.modules.test.entity.TestData;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jeesite.common.entity.Page;
-import com.jeesite.modules.test.entity.TestData;
+import java.util.List;
 
 /**
- * 测试数据Service
+ * 测试数据API
  * @author ThinkGem
  * @version 2018-10-18
  */
@@ -24,21 +23,22 @@ public interface TestDataServiceApi {
 	
 	/**
 	 * 获取单条数据
-	 * @param testData
+	 * @param id
 	 * @return
 	 */
 	@RequiresPermissions("test:testData:view")
-	@GetMapping(value = "getByPk")
-	public TestData get(@RequestParam("id") String id);
+	@PostMapping(value = "getByPk")
+	TestData get(@RequestParam(name = "id", required = false) String id);
 	
 	/**
 	 * 获取单条数据
-	 * @param testData
+	 * @param id
+	 * @param isNewRecord
 	 * @return
 	 */
 	@RequiresPermissions("test:testData:view")
-	@GetMapping(value = "getByPkAndIsNewRecord")
-	public TestData get(@RequestParam("id") String id, @RequestParam("isNewRecord") boolean isNewRecord);
+	@PostMapping(value = "getByPkAndIsNewRecord")
+	TestData get(@RequestParam(name = "id", required = false) String id, @RequestParam("isNewRecord") boolean isNewRecord);
 	
 	/**
 	 * 查询分页数据
@@ -47,17 +47,26 @@ public interface TestDataServiceApi {
 	 */
 	@RequiresPermissions("test:testData:view")
 	@PostMapping(value = "findList")
-	public List<TestData> findList(TestData testData);
+	List<TestData> findList(TestData testData);
 	
 	/**
 	 * 查询分页数据
-	 * @param page 分页对象
-	 * @param testData
+	 * @param testData 查询条件
+	 * @param testData page 分页对象
 	 * @return
 	 */
 	@RequiresPermissions("test:testData:view")
 	@PostMapping(value = "findPage")
-	public Page<TestData> findPage(TestData testData);
+	Page<TestData> findPage(TestData testData);
+	
+	/**
+	 * 查询数据总数
+	 * @param testData
+	 * @return
+	 */
+	@RequiresPermissions("test:testData:view")
+	@PostMapping(value = "findCount")
+	long findCount(TestData testData);
 	
 	/**
 	 * 保存数据（插入或更新）
@@ -65,7 +74,7 @@ public interface TestDataServiceApi {
 	 */
 	@RequiresPermissions("test:testData:edit")
 	@PostMapping(value = "save")
-	public void save(TestData testData);
+	void save(TestData testData);
 	
 	/**
 	 * 更新状态
@@ -73,7 +82,7 @@ public interface TestDataServiceApi {
 	 */
 	@RequiresPermissions("test:testData:edit")
 	@PostMapping(value = "updateStatus")
-	public void updateStatus(TestData testData);
+	void updateStatus(TestData testData);
 	
 	/**
 	 * 删除数据
@@ -81,6 +90,6 @@ public interface TestDataServiceApi {
 	 */
 	@RequiresPermissions("test:testData:edit")
 	@PostMapping(value = "delete")
-	public void delete(TestData testData);
+	void delete(TestData testData);
 	
 }

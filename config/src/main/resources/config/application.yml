@@ -31,7 +31,8 @@ eureka:
   # 客户端设置
   client:
     # 注册中心地址（集群时指定另外一个注册中心地址）
-    serviceUrl.defaultZone: http://127.0.0.1:8970/eureka/
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8970/eureka/
 
 #======================================#
 #========== Spring settings ===========#
@@ -54,7 +55,7 @@ spring:
       
         # 使用本地配置文件
         native:
-          searchLocations: classpath:cloud-config
+          searchLocations: classpath:jeesite-cloud-yml
           
         # 使用Git储存配置文件
         git: 
@@ -62,7 +63,7 @@ spring:
           username: ~
           password: ~
           default-label: master
-          search-paths: cloud-config
+          search-paths: jeesite-cloud-yml
     
     # Consul 服务发现
     consul:

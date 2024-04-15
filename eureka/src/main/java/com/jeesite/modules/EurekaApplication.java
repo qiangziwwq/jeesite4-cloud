@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules;
 
@@ -12,7 +13,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 /**
  * Application
  * @author ThinkGem
- * @version 2018-10-13
  */
 @SpringBootApplication
 @EnableEurekaServer

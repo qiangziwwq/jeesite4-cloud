@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.web;
 
@@ -21,6 +22,8 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.test.client.TestDataServiceClient;
 import com.jeesite.modules.test.entity.TestData;
+
+import io.seata.spring.annotation.GlobalTransactional;
 
 /**
  * 测试数据Controller，调用 test1 服务
@@ -81,6 +84,7 @@ public class TestData2Controller extends BaseController {
 	@RequiresPermissions("test:testData:edit")
 	@PostMapping(value = "save")
 	@ResponseBody
+	@GlobalTransactional
 	public String save(@Validated TestData testData) {
 		testDataServiceClient.save(testData);
 		return renderResult(Global.TRUE, text("保存数据成功！"));

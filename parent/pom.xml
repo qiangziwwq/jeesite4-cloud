@@ -6,8 +6,9 @@
 	<parent>
 		<groupId>com.jeesite</groupId>
 		<artifactId>jeesite-parent</artifactId>
-		<version>4.1.8-SNAPSHOT</version>
+		<version>5.7.0-SNAPSHOT</version>
 		<!--<relativePath>../../jeesite/parent/pom.xml</relativePath>-->
+		<relativePath />
 	</parent>
 	
 	<artifactId>jeesite-cloud-parent</artifactId>
@@ -20,11 +21,12 @@
 	<properties>
 		
 		<!-- Spring Cloud -->
-		<spring-cloud.version>Finchley.SR3</spring-cloud.version>
-		
-        <!-- docker service -->
-        <docker.registryUrl>http://192.168.56.102:2375</docker.registryUrl>
-        <docker.imageName>${project.groupId}/${project.artifactId}:4.1</docker.imageName>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+		<nacos.version>2.3.0.1</nacos.version>
+		<seata.version>1.8.0</seata.version>
+		<eureka.version>1.10.18</eureka.version>
+		<xstream.version>1.4.20</xstream.version>
 		
 	</properties>
 	
@@ -37,51 +39,84 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+            <dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.nacos</groupId>
+				<artifactId>nacos-client</artifactId>
+				<version>${nacos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.nacos</groupId>
+				<artifactId>nacos-common</artifactId>
+				<version>${nacos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.nacos</groupId>
+				<artifactId>nacos-api</artifactId>
+				<version>${nacos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.seata</groupId>
+				<artifactId>seata-spring-boot-starter</artifactId>
+				<version>${seata.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.seata</groupId>
+				<artifactId>seata-serializer-kryo</artifactId>
+				<version>${seata.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.netflix.eureka</groupId>
+				<artifactId>eureka-client</artifactId>
+				<version>${eureka.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
 	<dependencies>
+	
+		<!-- bootstrap.yml -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
 		
-		<!-- Common -->
+		<!-- JeeSite Common -->
 		<dependency>
 			<groupId>com.jeesite</groupId>
 			<artifactId>jeesite-common</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+
+		<!-- ELK 日志收集 -->
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback.version}</version>
+		</dependency>
 		
 	</dependencies>
-
-	<profiles>
-		<!-- Docker 插件 -->
-		<profile>
-			<id>docker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<version>1.1.0</version>
-						<configuration>
-							<serverId>docker-hub</serverId>
-							<registryUrl>${docker.registryUrl}</registryUrl>
-							<dockerHost>${docker.registryUrl}</dockerHost>
-							<imageName>${docker.imageName}</imageName>
-							<dockerDirectory>${project.basedir}/bin/docker</dockerDirectory>
-							<resources>
-								<resource>
-									<targetPath>/</targetPath>
-									<directory>${project.build.directory}</directory>
-									<include>web.war</include>
-								</resource>
-							</resources>
-							<forceTags>true</forceTags>
-							<pushImage>false</pushImage>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 	
 	<developers>  
 		<developer>
@@ -97,5 +132,24 @@
 		<name>JeeSite</name>
 		<url>http://jeesite.com</url>
 	</organization>
+	
+	<repositories>
+		<repository>
+			<id>aliyun-repos</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
+		<repository>
+			<id>jeesite-repos</id>
+			<url>https://maven.jeesite.net/repository/maven-public</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun-repos</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</pluginRepository>
+	</pluginRepositories>
 	
 </project>

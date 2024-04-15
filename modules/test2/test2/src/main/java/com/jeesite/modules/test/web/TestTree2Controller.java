@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.web;
 
@@ -16,15 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jeesite.common.config.Global;
 import com.jeesite.common.collect.ListUtils;
 import com.jeesite.common.collect.MapUtils;
-import com.jeesite.common.lang.StringUtils;
+import com.jeesite.common.config.Global;
 import com.jeesite.common.idgen.IdGen;
-import com.jeesite.modules.sys.utils.UserUtils;
+import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.web.BaseController;
+import com.jeesite.modules.sys.utils.UserUtils;
 import com.jeesite.modules.test.entity.TestTree;
 import com.jeesite.modules.test.service.TestTreeService;
+
+import io.seata.spring.annotation.GlobalTransactional;
 
 /**
  * 测试树表Controller
@@ -123,6 +126,7 @@ public class TestTree2Controller extends BaseController {
 	@RequiresPermissions("test:testTree:edit")
 	@PostMapping(value = "save")
 	@ResponseBody
+	@GlobalTransactional
 	public String save(@Validated TestTree testTree) {
 		testTreeService.save(testTree);
 		return renderResult(Global.TRUE, text("保存数据成功！"));

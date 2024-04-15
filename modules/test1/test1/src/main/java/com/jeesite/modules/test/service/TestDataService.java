@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.service;
 
@@ -20,6 +21,8 @@ import com.jeesite.modules.test.dao.TestDataDao;
 import com.jeesite.modules.test.entity.TestData;
 import com.jeesite.modules.test.entity.TestDataChild;
 
+import io.seata.spring.annotation.GlobalTransactional;
+
 /**
  * 测试数据Service
  * @author ThinkGem
@@ -27,7 +30,6 @@ import com.jeesite.modules.test.entity.TestDataChild;
  */
 @Service
 @RestController
-@Transactional(readOnly=true)
 public class TestDataService extends CrudService<TestDataDao, TestData>
 		implements TestDataServiceApi{
 	
@@ -52,22 +54,12 @@ public class TestDataService extends CrudService<TestDataDao, TestData>
 	
 	/**
 	 * 查询分页数据
-	 * @param page 分页对象
-	 * @param testData
+	 * @param testData 查询条件
+	 * @param testData page 分页对象
 	 * @return
 	 */
 	@Override
 	public Page<TestData> findPage(TestData testData) {
-		
-//		// 演示Map参数和返回值，支持分页
-//		Page<Map<String, Object>> pageMap = new Page<>();
-//		Map<String, Object> params = MapUtils.newHashMap();
-//		params.put("testInput", "123");
-//		params.put("page", pageMap);
-//		pageMap.setList(dao.findListForMap(params));
-//		System.out.println(pageMap.getList());
-//		System.out.println(pageMap.getCount());
-		
 		return super.findPage(testData);
 	}
 	
@@ -76,14 +68,14 @@ public class TestDataService extends CrudService<TestDataDao, TestData>
 	 * @param testData
 	 */
 	@Override
-//	@LcnTransaction
-	@Transactional(readOnly=false)
+	@GlobalTransactional
+	@Transactional
 	public void save(TestData testData) {
 		super.save(testData);
 		// 保存上传图片
-		FileUploadUtils.saveFileUpload(testData.getId(), "testData_image");
+		FileUploadUtils.saveFileUpload(testData, testData.getId(), "testData_image");
 		// 保存上传附件
-		FileUploadUtils.saveFileUpload(testData.getId(), "testData_file");
+		FileUploadUtils.saveFileUpload(testData, testData.getId(), "testData_file");
 		// 保存 TestData子表
 		for (TestDataChild testDataChild : testData.getTestDataChildList()){
 			if (!TestDataChild.STATUS_DELETE.equals(testDataChild.getStatus())){
@@ -106,7 +98,7 @@ public class TestDataService extends CrudService<TestDataDao, TestData>
 	 * @param testData
 	 */
 	@Override
-	@Transactional(readOnly=false)
+	@Transactional
 	public void updateStatus(TestData testData) {
 		super.updateStatus(testData);
 	}
@@ -116,7 +108,7 @@ public class TestDataService extends CrudService<TestDataDao, TestData>
 	 * @param testData
 	 */
 	@Override
-	@Transactional(readOnly=false)
+	@Transactional
 	public void delete(TestData testData) {
 		super.delete(testData);
 		TestDataChild testDataChild = new TestDataChild();
@@ -135,7 +127,7 @@ public class TestDataService extends CrudService<TestDataDao, TestData>
 	/**
 	 * 事务测试，若 Child 报错，则回滚
 	 */
-	@Transactional(readOnly=false/*, propagation=Propagation.NOT_SUPPORTED*/)
+	@Transactional//(propagation=Propagation.NOT_SUPPORTED)
 	public void transTest(TestData testData) {
 		testData.setTestInput("transTest");
 		testData.setTestTextarea(IdGen.randomBase62(5));

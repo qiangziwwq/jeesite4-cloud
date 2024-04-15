@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.web;
 
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.jeesite.common.config.Global;
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.test.entity.TestData;
 import com.jeesite.modules.test.service.TestDataService;
+
+import io.seata.spring.annotation.GlobalTransactional;
 
 /**
  * 测试数据Controller
@@ -55,6 +59,7 @@ public class TestData1Controller extends BaseController {
 	/**
 	 * 查询列表数据
 	 */
+	@SentinelResource
 	@RequiresPermissions("test:testData:view")
 	@RequestMapping(value = "listData")
 	@ResponseBody
@@ -80,6 +85,7 @@ public class TestData1Controller extends BaseController {
 	@RequiresPermissions("test:testData:edit")
 	@PostMapping(value = "save")
 	@ResponseBody
+	@GlobalTransactional
 	public String save(@Validated TestData testData) {
 		testDataService.save(testData);
 		return renderResult(Global.TRUE, text("保存数据成功！"));

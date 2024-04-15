@@ -1,19 +1,22 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
  */
 package com.jeesite.modules.test.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesite.common.idgen.IdGen;
+import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.service.BaseService;
 import com.jeesite.modules.test.client.TestDataServiceClient;
 import com.jeesite.modules.test.client.TestTreeServiceClient;
 import com.jeesite.modules.test.entity.TestData;
 import com.jeesite.modules.test.entity.TestTree;
+
+import io.seata.spring.annotation.GlobalTransactional;
 
 /**
  * 分布式事务测试
@@ -21,7 +24,6 @@ import com.jeesite.modules.test.entity.TestTree;
  * @version 2020-1-9
  */
 @Service
-@Transactional(readOnly=true)
 public class TransTestService extends BaseService{
 	
 	@Autowired
@@ -32,9 +34,9 @@ public class TransTestService extends BaseService{
 	/**
 	 * 事务测试，第二个接口调用故意抛出异常
 	 */
-//	@LcnTransaction
-	@Transactional(readOnly=false)
-	public void transTest(TestData testData) {
+	@GlobalTransactional
+	@Transactional
+	public void transTest(TestData testData, boolean normal) {
 		
 		// 正常保存 testData 数据
 		testData.setIsNewRecord(true);
@@ -56,14 +58,19 @@ public class TransTestService extends BaseService{
 		}
 		// 设置一个超出数据库范围的值，抛出数据库异常
 		StringBuilder sb = new StringBuilder();
-		for (int i=0; i<500; i++){
+		for (int i=0; i<(normal?1:500); i++){
 			sb.append("transTest" + i);
 		}
 		testTree.setTreeName(sb.toString());
 		testTreeService.save(testTree);
 		
 		// 有些情况可能需要手动回滚事务，调用该方法即可
-		//DTXUserControls.rollbackCurrentGroup();
+//		try {
+//			logger.info("Seata 手动回滚");
+//			GlobalTransactionContext.reload(RootContext.getXID()).rollback();
+//		} catch (TransactionException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**
@@ -74,6 +81,16 @@ public class TransTestService extends BaseService{
 			return true;
 		}
 		return testDataService.get(testData.getId()) == null;
+	}
+
+	/**
+	 * 事务验证，返回空，则事务回滚成功
+	 */
+	public boolean transValid(TestTree testTree) {
+		if (StringUtils.isBlank(testTree.getId())){
+			return true;
+		}
+		return testTreeService.get(testTree.getId()) == null;
 	}
 	
 }

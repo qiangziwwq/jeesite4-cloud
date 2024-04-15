@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.jeesite</groupId>
 		<artifactId>jeesite-cloud-parent</artifactId>
-		<version>4.1.8-SNAPSHOT</version>
+		<version>5.7.0-SNAPSHOT</version>
 		<relativePath>../../../parent/pom.xml</relativePath>
 	</parent>
 	
@@ -17,33 +17,16 @@
 	<url>http://jeesite.com</url>
 	<inceptionYear>2013-Now</inceptionYear>
 	
-	<properties>
-		
-	</properties>
-	
 	<dependencies>
 		
 		<!-- 云客户端 -->
 		<dependency>
 			<groupId>com.jeesite</groupId>
-			<artifactId>jeesite-cloud-module-feign</artifactId>
+			<artifactId>jeesite-cloud-framework</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		
-		<!-- 业务流程
-		<dependency>
-			<groupId>com.jeesite</groupId>
-			<artifactId>jeesite-cloud-module-bpm-client</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency> -->
-		
 	</dependencies>
-	
-	<build>
-		<plugins>
-			
-		</plugins>
-	</build>
 	
 	<developers>  
 		<developer>

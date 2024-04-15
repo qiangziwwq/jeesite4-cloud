@@ -1,22 +1,20 @@
-FROM frolvlad/alpine-java:jdk8-slim
-MAINTAINER ThinkGem@163.com
+FROM openjdk:8-slim
+LABEL maintainer="ThinkGem@163.com"
 ENV TZ "Asia/Shanghai"
 ENV LANG C.UTF-8
 VOLUME /tmp
 
 WORKDIR /app
-ADD web.war .
-RUN jar -xvf web.war
-# RUN chmod -R 755 ./*
 
-WORKDIR /app/WEB-INF
-# ENV JAVA_OPTS "-Xms256m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m"
-ENV JAVA_OPTS "$JAVA_OPTS -Dspring.profiles.active=native"
+#RUN mkdir WEB-INF
+#ADD jeesite.lic ./WEB-INF
+ADD ./maven/web.war ./app.war
 
-ADD application-native.yml ./classes/config
+#ENV JAVA_OPTS "$JAVA_OPTS -Xms256m -Xmx1024m"
+ENV JAVA_OPTS "$JAVA_OPTS -Dspring.profiles.active=git"
 
-ENTRYPOINT java -cp /app $JAVA_OPTS org.springframework.boot.loader.WarLauncher
+ENTRYPOINT jar -xvf app.war && rm app.war && cd WEB-INF && sh startup.sh
 
 EXPOSE 8971
 
-# docker run -p 8971:8971 com.jeesite/jeesite-cloud-config:4.1
+#docker run -p 8971:8971 thinkgem/jeesite-cloud-module-config:5.3

@@ -1,9 +1,9 @@
-<% layout('/layouts/default.html', {title: '数据管理', libs: ['dataGrid','validate']}){ %>
+<% layout('/layouts/default.html', {title: '编辑表格多行编辑', libs: ['dataGrid','validate']}){ %>
 <div class="main-content">
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa icon-notebook"></i> 数据管理
+				<i class="fa icon-notebook"></i> 编辑表格多行编辑
 			</div>
 			<div class="box-tools pull-right">
 				<a href="#" class="btn btn-default" id="btnSearch" title="查询"><i class="fa fa-filter"></i> 查询</a>
@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div class="box-body">
-			<#form:form id="searchForm" model="${testData}" action="${ctx}/test/testData/listData" method="post" class="form-inline hide"
+			<#form:form id="searchForm" model="${testData}" action="${ctx}/test1/testData/listData" method="post" class="form-inline hide"
 					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
 				<div class="form-group">
 					<label class="control-label">单行文本：</label>
@@ -53,21 +53,21 @@
 				<div class="form-group">
 					<label class="control-label">日期选择：</label>
 					<div class="control-inline">
-						<#form:input path="testDate_gte" readonly="true" maxlength="20" class="form-control Wdate-date"
-							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,onpicked:function(){testDate_lte.click()}});"/>
-						&nbsp;--&nbsp;
-						<#form:input path="testDate_lte" readonly="true" maxlength="20" class="form-control Wdate-date"
-							dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						<#form:input path="testDate_gte" readonly="true" maxlength="20" class="form-control laydate width-date"
+							dataFormat="date" data-type="date" data-format="yyyy-MM-dd" data-done="testDate_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="testDate_lte" readonly="true" maxlength="20" class="form-control laydate width-date"
+							dataFormat="date" data-type="date" data-format="yyyy-MM-dd"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label">日期时间：</label>
 					<div class="control-inline">
-						<#form:input path="testDatetime_gte" readonly="true" maxlength="20" class="form-control Wdate-datetime"
-							dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false,onpicked:function(){testDatetime_lte.click()}});"/>
-						&nbsp;--&nbsp;
-						<#form:input path="testDatetime_lte" readonly="true" maxlength="20" class="form-control Wdate-datetime"
-							dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
+						<#form:input path="testDatetime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="testDatetime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="testDatetime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -107,11 +107,11 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-sm">查询</button>
-					<button type="reset" class="btn btn-default btn-sm">重置</button>
+					<button type="submit" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-search"></i> ${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm isQuick"><i class="glyphicon glyphicon-repeat"></i> ${text('重置')}</button>
 				</div>
 			</#form:form>
-			<#form:form id="inputForm" model="${testData}" action="${ctx}/test/testData/save" method="post" class="form-horizontal">
+			<#form:form id="inputForm" model="${testData}" action="${ctx}/test1/testData/save" method="post" class="form-horizontal table-form">
 				<table id="dataGrid"></table>
 				<div id="dataGridPage"></div>
 			</#form:form>
@@ -120,7 +120,7 @@
 </div>
 <% } %>
 <script>
-// 初始化DataGrid对象
+//# // 初始化DataGrid对象
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	// 设置数据表格列
@@ -131,35 +131,35 @@ $('#dataGrid').dataGrid({
 		{header:'多行文本', name:'testTextarea', width:150, editable:true, edittype:'textarea', editoptions:{'maxlength':'200', 'class':'form-control', 'rows':'1'}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}},
 		{header:'下拉框', name:'testSelect', width:100, 
 			editable:true, edittype:'select', editoptions:{'class':'form-control',
-				items: $.merge([{dictLabel:'&nbsp;',dictValue:''}], ${@DictUtils.getDictListJson('sys_menu_type')}),
+				items: $.merge([{dictLabel:'&nbsp;',dictValue:''}], "#{@DictUtils.getDictListJson('sys_menu_type')}"),
 				itemLabel: 'dictLabel', itemValue: 'dictValue', dataInit: function(element){
-					$(element).select2().on("change",function(){$(this).resetValid()});
+					js.select2(element).on("change",function(){$(this).resetValid()});
 				}
 			}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
 		},
 // 		{header:'下拉多选', name:'testSelectMultiple', width:100, 
 // 			editable:true, edittype:'select', editoptions:{multiple:true, 'class':'form-control',
-// 				items: $.merge([], ${@DictUtils.getDictListJson('sys_menu_type')}),
+// 				items: $.merge([], "#{@DictUtils.getDictListJson('sys_menu_type')}"),
 // 				itemLabel: 'dictLabel', itemValue: 'dictValue', dataInit: function(element){
-// 					$(element).select2().on("change",function(){$(this).resetValid()});
+// 					js.select2(element).on("change",function(){$(this).resetValid()});
 // 				}
 // 			}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
 // 		},
 		{header:'日期选择', name:'testDate', width:150, 
 			formatter:'date', formatoptions:{srcformat:'Y-m-d H:i:s',newformat:'Y-m-d'},
-			editable:true, edittype:'text', editoptions:{'class':'form-control Wdate required', 'readonly':'true',
-				dataInit: function(element){ $(element).on('focus', function(){
-					WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});
-				});
-			}}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
+			editable:true, edittype:'text', editoptions:{'class':'form-control laydate required', 'readonly':'true',
+				dataInit: function(element){
+					laydate.render({elem:element, type:'date', format:'yyyy-MM-dd'});
+				}
+			}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
 		},
 		{header:'日期时间', name:'testDatetime', width:150, 
 			formatter:'date', formatoptions:{srcformat:'Y-m-d H:i:s',newformat:'Y-m-d H:i:s'},
-			editable:true, edittype:'text', editoptions:{'class':'form-control Wdate required', 'readonly':'true',
-				dataInit: function(element){ $(element).on('focus', function(){
-					WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});
-				});
-			}}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
+			editable:true, edittype:'text', editoptions:{'class':'form-control laydate required', 'readonly':'true',
+				dataInit: function(element){
+					laydate.render({elem:element, type:'datetime', format:'yyyy-MM-dd HH:mm'});
+				}
+			}, unformat: function(val, obj, cell){return $('#'+obj.rowId+'_'+obj.colModel.name, cell).val();}
 		},
 		{header:'用户选择', name:'testUser', width:150,
 			formatter: function(val, obj, row, act){
@@ -240,7 +240,7 @@ $('#dataGrid').dataGrid({
 	editGridInputFormListName: 'testDataChildList', // 提交的数据列表名
 	editGridInputFormListAttrs: 'status,id,testSort,testData.id,testInput,testTextarea,testSelect,testSelectMultiple,testRadio,testCheckbox,testDate,testDatetime,testUser.userCode,testOffice.officeCode,testAreaCode,testAreaName,', // 提交数据列表的属性字段
 	
-	// 加载成功后执行事件
+	//# // 加载成功后执行事件
 	ajaxSuccess: function(data){
 		
 	}
